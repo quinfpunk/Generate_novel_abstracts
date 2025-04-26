@@ -76,10 +76,31 @@ This module provides functionality to:
 - Decode combined embeddings to generate coherent paper abstracts
 
 ### LinkPredictor (`src/LinkPredictor.py`)
-This module implements algorithms to:
-- Predict the optimal number of citation links for a new paper node
-- Select specific papers to cite based on graph structural information
-- Create meaningful citation relationships for the new node
+The EnhancedLinkPredictor class implements advanced algorithms to predict citation relationships for new paper nodes in the citation network. Key features include:
+
+Dynamic determination of the optimal number of citation links for a new paper node based on network statistics
+Selection of specific papers to cite using multiple structural metrics:
+
+Personalized PageRank (weighted most heavily at 70%)
+Jaccard Coefficient (15%)
+Adamic-Adar Index (5%)
+Resource Allocation Index (5%)
+Centrality metrics (3%)
+Preferential Attachment (2%)
+
+
+Probabilistic edge prediction with controlled randomness factor for exploration
+Community detection using Louvain algorithm for small graphs and degree-based approximation for large graphs
+Comprehensive network analysis capabilities to evaluate structural properties
+
+The implementation includes sophisticated evaluation methods that:
+
+Assess how well graph structure is preserved during link prediction
+Compare network metrics between original, masked, and predicted networks
+Analyze changes in key properties like clustering coefficient, transitivity, assortativity, and path lengths
+Handle directed citation relationships appropriately using directed graph algorithms
+
+This component is critical for maintaining the structural integrity of the citation network when predicting how new papers would integrate into the existing literature.RetryClaude can make mistakes. Please double-check responses.
 
 ### Testing and Evaluation (`src/testing_LinkPredictor.ipynb`)
 This notebook provides comprehensive testing and validation of the link prediction algorithms:
