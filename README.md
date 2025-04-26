@@ -121,6 +121,17 @@ The CitationGraphAbstractGenerator class contains the methods to:
 - evaluate a node, using cosine similarity and, by extracting the abstract's concepts, concepts comparaison
 - visualize the graph, emphazing the new nodes
 
+This implementation aggregates embeddings doing an average of the first hop neighbors.
+The aggregated embedding is decoded using t5 giving an abstract. This abstract is then enhanced using gemma3:4b.
+For a given node the following metrics are computed to evaluate the abstract (similarities are computed with the node's neighbors):
+- Average similarity
+- Max similarity
+- Min similarity
+- Std similarity
+- Average concept similarity
+- New concepts count
+- New concepts pourcentage
+
 This class is used in the `MLNS_groupProject.ipynb` file to run the abstract generation and visualize the citation graph with new nodes.
 
 ## Setup and Usage
