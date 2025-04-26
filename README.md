@@ -1,7 +1,7 @@
 # Citation Network Analysis Project
 
 ## Overview
-This project processes and analyzes the Citation Network Dataset from Kaggle to generate new paper abstracts using citation graph structures. The system leverages link prediction techniques to predict potential citations between papers and uses these predictions to generate new abstracts based on the graph embeddings.
+This project processes and analyzes the Citation Network Dataset from Kaggle to generate entirely new academic papers. The system creates new nodes in the citation graph by predicting link structures, combining embeddings, and generating abstracts based on the graph's structural information.
 
 ## Data Source
 The original dataset comes from [Kaggle's Citation Network Dataset](https://www.kaggle.com/datasets/mathurinache/citation-network-dataset/data), which contains metadata about academic papers including their citations and references.
@@ -24,10 +24,13 @@ The original dataset comes from [Kaggle's Citation Network Dataset](https://www.
 └── README.md
 ```
 
-## Project Objectives
-- Predict potential citation links between academic papers using graph structural information
-- Generate new paper abstracts based on the predicted citation network
-- Create a system that can both predict the number of links and determine which specific links to form
+## Project Objective
+The primary objective is to create entirely new paper nodes in the citation network:
+1. Predict the number of citation links for a new paper node
+2. Predict specific papers the new node should link to based on graph structural information
+3. Combine embeddings from the selected links to create a representation of the new paper
+4. Generate an abstract for this new paper based on the combined embeddings
+5. Store the new node with its abstract and citation links in the graph
 
 ## Data Processing Pipeline
 
@@ -69,20 +72,21 @@ jupyter notebook MLNS_groupProject.ipynb
 ### EncoderDecoder (`src/EncoderDecoder.py`)
 This module provides functionality to:
 - Encode citation network data into graph embeddings
-- Generate new graph embeddings from predicted links
-- Decode graph embeddings to generate paper abstracts
+- Combine embeddings from selected citation links to form a new paper representation
+- Decode combined embeddings to generate coherent paper abstracts
 
 ### LinkPredictor (`src/LinkPredictor.py`)
 This module implements algorithms to:
-- Predict potential links (citations) between papers based on graph structural information
-- Determine both the number of links to predict and which specific links to choose
+- Predict the optimal number of citation links for a new paper node
+- Select specific papers to cite based on graph structural information
+- Create meaningful citation relationships for the new node
 
 ### Testing and Evaluation (`src/testing_LinkPredictor.ipynb`)
 This notebook provides comprehensive testing and validation of the link prediction algorithms:
 - Evaluates the quality of link prediction on masked nodes using the Cora dataset as a benchmark
 - Assesses how well the graph structure is preserved during the link prediction process
 - Provides insights into the performance of different prediction strategies
-- Validates that the predicted citation network maintains essential structural properties of the original
+- Validates that the new nodes integrate naturally into the existing citation network
 
 ## Setup and Usage
 
@@ -94,16 +98,16 @@ This notebook provides comprehensive testing and validation of the link predicti
    - Data filtering: `get_filter_data_with_references.ipynb`
    - Analysis and model training: `MLNS_groupProject.ipynb`
 
-### Quick Testing
-For quick testing without processing the entire dataset:
-1. Use the provided sample file: `data/dblp_papers_filtered_sample_with_refs.csv`
-2. This sample contains 100 papers from 2020 along with all their cited papers
-3. Run directly with the testing notebook or main project notebook:
+### Testing the System
+To test the paper generation system:
+1. Use the main notebook at the root level:
    ```
-   jupyter notebook src/testing_LinkPredictor.ipynb
-   # or
    jupyter notebook MLNS_groupProject.ipynb
    ```
+2. For quick testing with the sample dataset:
+   - Use the provided sample file: `data/dblp_papers_filtered_sample_with_refs.csv`
+   - Run the MLNS_groupProject.ipynb notebook with this sample data
+   - The notebook contains all necessary code to test the full pipeline from link prediction to abstract generation
 
 ## Dependencies
 - pandas
@@ -112,9 +116,12 @@ For quick testing without processing the entire dataset:
 - re
 - ast
 - tqdm
-- Network/graph libraries (e.g., NetworkX)
-- Deep learning frameworks for embedding generation and abstract prediction
-- Other libraries as imported in the scripts
+- networkx
+- transformers
+- nltk
+- ijson
+- gc
+- os
 
 ## Contributors
 - **Timothée Strouk**
