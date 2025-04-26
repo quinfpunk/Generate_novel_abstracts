@@ -13,7 +13,6 @@ class EnhancedLinkPredictor:
             citation_graph: NetworkX DiGraph object representing the citation network
         """
         self.citation_graph = citation_graph
-        self.G_undirected = citation_graph.to_undirected()  # For some metrics
 
     def predict_links(self, node_id, top_k=None, randomness_factor=0.1):
         """
