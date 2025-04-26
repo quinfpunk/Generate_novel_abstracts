@@ -17,6 +17,7 @@ The original dataset comes from [Kaggle's Citation Network Dataset](https://www.
 │   ├── parseFile_batched.py
 │   └── parseFile_raw.py
 ├── src/
+│   ├── CitationGraphAbstractGenerator.py
 │   ├── EncoderDecoder.py
 │   ├── LinkPredictor.py
 │   └── testing_LinkPredictor.ipynb
@@ -66,10 +67,16 @@ The main analysis and modeling are conducted in the root-level notebook:
 ```
 jupyter notebook MLNS_groupProject.ipynb
 ```
+This notebook takes `data/dblp_papers_filtered_sample_with_refs.csv` as an input.
+It reduces the dataset (adjust the values depending of your RAM constraints).
+Then using the classes in `src/CitationGraphAbstractGenerator.py` and `src/LinkPredictor.py`
+it will create a new node in the graph created from the dataset in input. In the process,
+it will show the generated abstract. Finally, a visualization will be shown along with metrics.
+At the bottom of the notebook the results of generation with different behavior and parameters can be observed.
 
 ## Key Components
 
-### EncoderDecoder (`src/EncoderDecoder.py`)
+### `/!\ Deprecated` EncoderDecoder (`src/EncoderDecoder.py`)
 This module provides functionality to:
 - Encode citation network data into graph embeddings
 - Combine embeddings from selected citation links to form a new paper representation
@@ -106,6 +113,16 @@ This notebook provides comprehensive testing and validation of the link predicti
 - Provides insights into the performance of different prediction strategies
 - Validates that the new nodes integrate naturally into the existing citation network
 
+### Add new nodes and generate associated abstract (`src/CitationGraphAbstractGenerator.py`)
+The CitationGraphAbstractGenerator class contains the methods to:
+- load a given citation graph
+- compute the embedding of each node
+- create new nodes (using LinkPredictor to have the nodes links) and its associated abstract using t5 small and gemma3:4b
+- evaluate a node, using cosine similarity and, by extracting the abstract's concepts, concepts comparaison
+- visualize the graph, emphazing the new nodes
+
+This class is used in the `MLNS_groupProject.ipynb` file to run the abstract generation and visualize the citation graph with new nodes.
+
 ## Setup and Usage
 
 1. Clone this repository
@@ -114,7 +131,7 @@ This notebook provides comprehensive testing and validation of the link predicti
    - Initial processing: `parseFile_raw.py`
    - Batch preprocessing: `parseFile_batched.py`
    - Data filtering: `get_filter_data_with_references.ipynb`
-   - Analysis and model training: `MLNS_groupProject.ipynb`
+   - Analysis and generation of new abstracts: `MLNS_groupProject.ipynb`
 
 ### Testing the System
 To test the paper generation system:
@@ -129,6 +146,10 @@ To test the paper generation system:
 
 ## Dependencies
 - pandas
+- torch
+- scikit-learn
+- matplotlib
+- tqdm
 - numpy
 - glob
 - re
@@ -140,6 +161,8 @@ To test the paper generation system:
 - ijson
 - gc
 - os
+- ollama
+- json
 
 ## Contributors
 - **Timothée Strouk**
